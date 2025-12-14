@@ -1,41 +1,40 @@
 import streamlit as st
 
-def page_start():
-    if st.session_state.x:
-        with st.sidebar:
-            st.header("Application menu")
-            st.write("You are signed on")
-        st.title("You are logged in")
-        st.write("Logged in content")
+# --------------------------------------------
+# SESSION STATE
+# --------------------------------------------
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
 
-if "x" not in st.session_state:
-    st.session_state.x = False
+# --------------------------------------------
+# LOGIN FUNCTION
+# --------------------------------------------
+def login(username, password):
+    # Replace with real authentication if needed
+    if username == "admin" and password == "1234":
+        st.session_state.authenticated = True
+        st.success("Login successful! You can now access the dashboard.")
+    else:
+        st.error("Invalid username or password")
 
-st.set_page_config(
-    page_title="Multi-Domain Intelligence App"
+# --------------------------------------------
+# LOGIN PAGE LAYOUT
+# --------------------------------------------
+st.set_page_config(page_title="Login - Multi-Domain Intelligence App", page_icon="🔐", layout="centered")
+
+st.markdown(
+    """
+    <div style="text-align:center; margin-bottom:30px;">
+        <h1>Welcome to the Multi-Domain Intelligence App</h1>
+        <p>Secure Dashboard for Credential Hygiene Analysis</p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
-if st.session_state.x :
-    with st.sidebar:
-        st.header("Application menu")
-        st.write("You are signed on")
-else:
-    st.session_state.x = True
+username = st.text_input("Username", placeholder="Enter your username")
+password = st.text_input("Password", type="password", placeholder="Enter your password")
 
-with st.sidebar:
-    st.header("Application options")
-    name1 = st.text_input("username")
-    passwd1 = st.text_input("password", type="password")
-
-st.title("Hello")
-st.write("This will be shown on the page")
-name = st.text_input("Username")
-passwd = st.text_input("Password", type="password")
 if st.button("Login"):
-    st.write("Login button clicked! username: "
-                                        + name +
-             "Password:  " + passwd)
+    login(username, password)
 
-with st.expander("see application details"):
-    st.write("This is a test screen!")
-    st.write("I created all of with myself with no help from AI or Friends")

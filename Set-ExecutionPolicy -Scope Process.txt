@@ -1,0 +1,1 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; . 'C:\Users\ORACLE\Desktop\1510\transfer\.venv\Scripts\Activate.ps1'
