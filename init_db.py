@@ -1,23 +1,36 @@
-import sqlite3
-
-DB = "platform.db"
+from db import get_connection
 
 def init_db():
-    conn = sqlite3.connect(DB)
+    conn = get_connection()
     cur = conn.cursor()
 
+    # USERS
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            role TEXT NOT NULL
-        )
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        password_hash TEXT,
+        role TEXT
+    )
+    """)
+
+    # CREDENTIAL HYGIENE TABLE
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS credentials (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        password_length INTEGER,
+        reused_password TEXT,
+        default_password TEXT,
+        last_changed_days INTEGER,
+        failed_logins INTEGER,
+        role TEXT
+    )
     """)
 
     conn.commit()
     conn.close()
-    print("Database initialized. Table 'users' created.")
 
 if __name__ == "__main__":
     init_db()
+    print("Database initialized")
